@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pendidikan Pancasila: Mencocokkan Perilaku dengan Sila Pancasila</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Background Landscape -->
+  <div class="bg-landscape"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- Tombol Suara (Melayang di pojok kanan atas) -->
+  <button id="sound-toggle" class="sound-toggle" aria-label="Aktifkan atau matikan musik">
+    <span class="sound-icon" id="sound-icon">🔊</span>
+    <span class="sound-label" id="sound-label">Musik: ON</span>
+  </button>
+
+  <!-- Audio Backsound -->
+  <audio id="backsound" loop preload="auto">
+    <source src="assets/audio/Backsound.mp3" type="audio/mpeg" />
+    Browser kamu tidak mendukung audio.
+  </audio>
+
+  <div id="app">
+    <!-- ============ MENU UTAMA ============ -->
+    <section id="screen-menu" class="screen active">
+      <div class="menu-container">
+        <div class="garuda-wrapper">
+          <img src="assets/img/garuda.png" alt="Garuda Pancasila" class="garuda-img" />
+        </div>
+        <h1 class="game-title">Pendidikan Pancasila</h1>
+        <p class="game-subtitle">Mencocokkan Perilaku dengan Sila Pancasila</p>
+        <div class="menu-buttons">
+          <button class="btn btn-primary" data-action="go-difficulty">
+            <span class="btn-icon">🎮</span> Mulai
+          </button>
+          <button class="btn btn-secondary" data-action="go-instructions">
+            <span class="btn-icon">📖</span> Petunjuk
+          </button>
+          <button class="btn btn-accent" data-action="go-about">
+            <span class="btn-icon">ℹ️</span> Tentang Game
+          </button>
+        </div>
+        <p class="menu-footer">Ayo belajar Pancasila dengan cara yang menyenangkan! 🇮🇩</p>
+      </div>
+    </section>
+
+    <!-- ============ PILIH KESULITAN ============ -->
+    <section id="screen-difficulty" class="screen">
+      <div class="panel">
+        <h2 class="panel-title">Pilih Tingkat Kesulitan</h2>
+        <p class="panel-desc">Pilih jumlah soal sesuai dengan kemampuanmu!</p>
+        <div class="difficulty-grid">
+          <button class="difficulty-card easy" data-level="easy">
+            <div class="diff-emoji">🌱</div>
+            <h3>Mudah</h3>
+            <p>5 Soal</p>
+            <span class="diff-badge">Pemula</span>
+          </button>
+          <button class="difficulty-card medium" data-level="medium">
+            <div class="diff-emoji">🌟</div>
+            <h3>Sedang</h3>
+            <p>10 Soal</p>
+            <span class="diff-badge">Menengah</span>
+          </button>
+          <button class="difficulty-card hard" data-level="hard">
+            <div class="diff-emoji">🔥</div>
+            <h3>Sulit</h3>
+            <p>15 Soal</p>
+            <span class="diff-badge">Penantang</span>
+          </button>
+        </div>
+        <button class="btn btn-back" data-action="go-menu">← Kembali ke Menu</button>
+      </div>
+    </section>
+
+    <!-- ============ LAYAR GAME ============ -->
+    <section id="screen-game" class="screen">
+      <div class="game-header">
+        <div class="header-top">
+          <!-- Tombol Kembali ke Pilih Kesulitan -->
+          <button class="btn-game-back" id="btn-game-back" title="Kembali ke Pilih Kesulitan">
+            ← Kembali
+          </button>
+          
+          <div class="header-info">
+            <div class="stat-box">
+              <span class="stat-label">Soal</span>
+              <span class="stat-value" id="question-counter">1 / 5</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Skor</span>
+              <span class="stat-value" id="score-display">0</span>
+            </div>
+          </div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="game-body">
+        <div class="question-card" id="question-card">
+          <div class="question-emoji" id="question-emoji">🤝</div>
+          <p class="question-label">Contoh perilaku:</p>
+          <h3 class="question-text" id="question-text">Memuat soal...</h3>
+        </div>
+
+        <div class="answers-grid" id="answers-grid"></div>
+
+        <div class="feedback" id="feedback">
+          <div class="feedback-icon" id="feedback-icon">✅</div>
+          <div class="feedback-content">
+            <h4 id="feedback-title">Benar!</h4>
+            <p id="feedback-text"></p>
+          </div>
+          <button class="btn btn-next" id="next-btn">Lanjut →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HASIL ============ -->
+    <section id="screen-result" class="screen">
+      <div class="panel result-panel">
+        <div class="result-emoji" id="result-emoji">🏆</div>
+        <h2 class="panel-title" id="result-title">Hebat!</h2>
+        <p class="result-message" id="result-message"></p>
+
+        <div class="result-stats">
+          <div class="result-stat total">
+            <span class="rs-value" id="result-score">0</span>
+            <span class="rs-label">Total Skor</span>
+          </div>
+          <div class="result-stat correct">
+            <span class="rs-value" id="result-correct">0</span>
+            <span class="rs-label">Jawaban Benar</span>
+          </div>
+          <div class="result-stat wrong">
+            <span class="rs-value" id="result-wrong">0</span>
+            <span class="rs-label">Jawaban Salah</span>
+          </div>
+        </div>
+
+        <div class="result-buttons">
+          <button class="btn btn-primary" data-action="play-again">🔄 Main Lagi</button>
+          <button class="btn btn-secondary" data-action="go-menu">🏠 Menu Utama</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PETUNJUK ============ -->
+    <section id="screen-instructions" class="screen">
+      <div class="panel scrollable">
+        <h2 class="panel-title">📖 Petunjuk Permainan</h2>
+        <div class="instruction-list">
+          <div class="instruction-item">
+            <span class="ins-num">1</span>
+            <p>Pilih tingkat kesulitan: <b>Mudah (5 soal)</b>, <b>Sedang (10 soal)</b>, atau <b>Sulit (15 soal)</b>.</p>
+          </div>
+          <div class="instruction-item">
+            <span class="ins-num">2</span>
+            <p>Setiap soal menampilkan <b>satu contoh perilaku</b> sehari-hari.</p>
+          </div>
+          <div class="instruction-item">
+            <span class="ins-num">3</span>
+            <p>Pilih <b>satu sila Pancasila</b> yang paling sesuai dengan perilaku tersebut.</p>
+          </div>
+          <div class="instruction-item">
+            <span class="ins-num">4</span>
+            <p>Jika <b>benar</b>, kamu mendapat <b>10 poin</b> dan penjelasan singkat.</p>
+          </div>
+          <div class="instruction-item">
+            <span class="ins-num">5</span>
+            <p>Jika <b>salah</b>, kamu akan melihat jawaban yang benar beserta penjelasannya.</p>
+          </div>
+          <div class="instruction-item">
+            <span class="ins-num">6</span>
+            <p>Klik tombol <b>Lanjut</b> untuk soal berikutnya. Setelah selesai, lihat hasilmu!</p>
+          </div>
+          <div class="instruction-item">
+            <span class="ins-num">7</span>
+            <p>Ingin ganti tingkat kesulitan? Klik tombol <b>← Kembali</b> di pojok kiri atas saat bermain.</p>
+          </div>
+        </div>
+        <button class="btn btn-back" data-action="go-menu">← Kembali ke Menu</button>
+      </div>
+    </section>
+
+    <!-- ============ TENTANG ============ -->
+    <section id="screen-about" class="screen">
+      <div class="panel scrollable">
+        <h2 class="panel-title">ℹ️ Tentang Game</h2>
+        <p class="panel-desc">Game edukasi ini dibuat untuk membantu siswa kelas 5 SD mempelajari nilai-nilai Pancasila melalui contoh perilaku sehari-hari.</p>
+        <div class="about-info">
+          <div class="about-row">
+            <span class="about-label">Nama</span>
+            <span class="about-value">Desti</span>
+          </div>
+          <div class="about-row">
+            <span class="about-label">NIM</span>
+            <span class="about-value">25376GSD0942</span>
+          </div>
+          <div class="about-row">
+            <span class="about-label">Dosen Pengampu</span>
+            <span class="about-value">Bapak Ali Rahmat Unton, S.T., M.Pd.</span>
+          </div>
+          <div class="about-row">
+            <span class="about-label">Mata Kuliah</span>
+            <span class="about-value">Media Pembelajaran dan TIK</span>
+          </div>
+        </div>
+        <button class="btn btn-back" data-action="go-menu">← Kembali ke Menu</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
